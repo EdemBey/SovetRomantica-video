@@ -12,13 +12,9 @@ app.get('/get-anime', async (req: Request, res: Response) => {
     const animeData = response.data;
 
     const $ = cheerio.load(animeData);
-    const sovetLink = await Promise.all(
-      $('[href*="sovetromantica.com/anime"]').toArray().map(async (element) => {
-        return element.attribs.href;
-      })
-    );
+    const sovetLink = $('[href*="sovetromantica.com/anime"]').first().attr('href');
     
-    const url = sovetLink[0];
+    const url = sovetLink as string;
     const pattern = /\/(\d+)/;
     const match = url.match(pattern);
     const id = match ? match[1] : null;
